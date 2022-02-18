@@ -2,6 +2,9 @@ use async_trait::async_trait;
 use thirtyfour::error::WebDriverError;
 use thirtyfour::prelude::*;
 
+
+// Just wanted to show off Rust a bit here by implementing my own trait on the
+// WebDriver object. 
 #[async_trait]
 pub trait NavigateToWikipedia {
     type Error;
@@ -17,6 +20,11 @@ impl NavigateToWikipedia for WebDriver {
     }
 }
 
+
+// This is generally how you will create page objects or component objects with thirtyfour and cucumber,
+// as a wrapper around a reference to the WebDriver. 
+// You may also choose for your objects to own the driver, but this will prevent you from storing
+// the driver as part of cucumbers global context. 
 pub struct WikipediaHomePage<'a> {
     driver_ref: &'a WebDriver,
 }

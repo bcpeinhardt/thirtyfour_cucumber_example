@@ -6,6 +6,9 @@ use tokio::time::{sleep, Duration};
 
 use thirtyfour_cucumber_example::{NavigateToWikipedia, WikipediaHomePage};
 
+// The cucumber crate has a trait "World" which you can implement on your own 
+// struct to use as a way to share context between your tests. I'll
+// use it to initialize and pass my WebDriver from step to step.
 #[derive(Debug, WorldInit)]
 struct Context {
     driver: WebDriver,
@@ -16,6 +19,9 @@ impl cucumber::World for Context {
     type Error = WebDriverError;
 
     async fn new() -> Result<Self, Self::Error> {
+
+        // Cucmber features are executed concurrently by default, so if your tests involve
+        // Selenium, you'll want to use Selenium Grid for multiple WebDrivers. 
         let caps = DesiredCapabilities::firefox();
         let driver = WebDriver::new("http://localhost:4444/wd/hub", &caps).await?;
         Ok(Self { driver })
